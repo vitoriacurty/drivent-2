@@ -1,10 +1,12 @@
-import { ticketsController } from "@/controllers/tickets-controller"
-import { Router } from "express"
+import { Router } from 'express';
+import { authenticateToken, validateBody } from '@/middlewares';
+import { ticketsController } from '@/controllers/tickets-controller';
+import { ticketsSchema } from '@/schemas/ticket-schema';
+ 
+const ticketsRouter = Router();
 
-const ticketsRouter = Router()
+ticketsRouter.get('/types', authenticateToken, ticketsController.getTicketType);
+ticketsRouter.get('/', authenticateToken, ticketsController.getTicket);
+ticketsRouter.post('/', authenticateToken, validateBody(ticketsSchema), ticketsController.createTicket);
 
-ticketsRouter.get("/types")
-ticketsRouter.get("/", ticketsController.getTicket)
-ticketsRouter.post("/")
-
-export { ticketsRouter }
+export { ticketsRouter };
